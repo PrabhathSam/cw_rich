@@ -171,6 +171,13 @@ rich.Browser.prototype = {
             }
             window.opener.CKEDITOR.tools.callFunction($.QueryString["CKEditorFuncNum"], url, id, name);
         }
+
+        try {
+            richBroadcastChannel($.QueryString["dom_id"], id, url, name, type)
+        } catch (e) {
+            console.log(e)
+        }
+
         // } else {
         // 	window.opener.CKEDITOR.tools.callFunction($.QueryString["CKEditorFuncNum"], url, id, name);
         // }
@@ -427,3 +434,17 @@ $(function () {
         }
     });
 });
+
+function richBroadcastChannel(dom_id, id, url, name, type) {
+    try {
+        new BroadcastChannel('richBroadcastChannel').postMessage({
+            id: id,
+            url: url,
+            name: name,
+            type: type,
+            dom_id: dom_id,
+        });
+    } catch (e) {
+        console.log(e)
+    }
+}
